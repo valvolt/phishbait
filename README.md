@@ -46,7 +46,96 @@ You can see what it looks like here:
 
 All visits to your web application will be logged (IP address, user agent). Visits to /gallery.html will take a fingerprint of the adversary and redirect to ```app.photobucket.com``` (feel free to change this default behavior as well)
 
-The meaningful data can be retrieved as follows:
+Interesting parts marked **in bold**
+
+## Any request:
+
+2021-11-24T14:46:23.263207+00:00 heroku[router]: at=info **method=GET path="/gallery.html"** host=[your app name].herokuapp.com request_id=c0193411-5a86-4688-ad33-3af5605f8340 **fwd="[ip address of the visitor]"** dyno=web.1 connect=0ms service=5ms status=200 bytes=30722 protocol=https
+
+2021-11-24T14:46:23.259738+00:00 app[web.1]: **/gallery.html/[GET parameters]**
+
+2021-11-24T14:46:23.259849+00:00 app[web.1]: **{[POST parameters]}**
+
+2021-11-24T14:46:23.259895+00:00 app[web.1]: ::ffff:10.1.45.169
+
+2021-11-24T14:46:23.259932+00:00 app[web.1]: **[user agent of the visitor]**
+
+
+## Fingerprint (triggered upon visiting gallery.html):
+
+2021-11-24T14:46:24.107412+00:00 heroku[router]: at=info **method=POST path="/meta.asp"** host=[your app name].herokuapp.com request_id=e18d1772-eb85-420f-b62b-235599e1eb75 **fwd="[ip address of the visitor]"** dyno=web.1 connect=0ms service=15ms status=404 bytes=232 protocol=https
+
+2021-11-24T14:46:24.106595+00:00 app[web.1]: **/meta.asp**
+
+2021-11-24T14:46:24.107625+00:00 app[web.1]: {
+
+2021-11-24T14:46:24.107670+00:00 app[web.1]:   **eyJmb250cyI6eyJ2YWx1ZSI6WyJCYXRh**
+
+**[snipped for brevity]**
+
+**Jwb3dQSSI6MS45Mjc1ODE0MTYwNTYwMTg1ZS01MH0sImR1cmF0aW9uIjoxfX0**: ''
+
+2021-11-24T14:46:24.107670+00:00 app[web.1]: }
+
+2021-11-24T14:46:24.107689+00:00 app[web.1]: ::ffff:10.1.45.169
+
+2021-11-24T14:46:24.107717+00:00 app[web.1]: **[user agent of the visitor]**
+
+## Fingerprint decoded
+
+The big blob highlighted is the fingerprint in base64 form. Once decoded, you'll obtain a json file containing some interesting information:
+
+```
+{
+  "fonts": {
+    "value": [
+      "Batang",
+      "Bitstream Vera Sans Mono",
+      "Meiryo UI",
+      "PMingLiU"
+    ],
+    "duration": 351
+  },
+  "osCpu": {
+    "value": "Linux x86_64",
+    "duration": 0
+  },
+  "languages": {
+    "value": [
+      [
+        "fr-FR"
+      ],
+      [
+        "fr-FR",
+        "fr"
+      ]
+    ],
+    "duration": 1
+  },
+  },
+  "timezone": {
+    "value": "Europe/Paris",
+    "duration": 25
+  },
+  "platform": {
+    "value": "Linux x86_64",
+    "duration": 0
+  },
+  "plugins": {
+    "value": [],
+    "duration": 0
+  },
+  "touchSupport": {
+    "value": {
+      "maxTouchPoints": 0,
+      "touchEvent": false,
+      "touchStart": false
+    },
+  "cookiesEnabled": {
+    "value": true,
+    "duration": 0
+}
+```
 
 # TODO
 
