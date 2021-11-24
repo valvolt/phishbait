@@ -5,7 +5,7 @@ You will reply to a phishing email with some of your own content which will trig
 
 - IP address
 - User Agent
-- Browser fingerprint
+- Browser fingerprint (script code copied from fingerprintjs2)
 
 Such info can be used for geolocation / unique identification
 
@@ -29,6 +29,11 @@ heroku container:release --app phishbait web
 heroku open --app phishbait
 ```
 
+You can see what it looks like here:
+- hxxps://phishbait.herokuapp.com/images/IMG_7944.jpg (default rickroll image)
+- hxxps://phishbait.herokuapp.com/gallery.html (takes fingerprint, redirects to app.photobucket.com)
+- All other URLs will return 404 resource not found, can be modified in server.js
+
 ## prepare your email
 - edit ```embed.html``` to your liking
 - create a new email to your phisher, attach embed.html inline
@@ -38,6 +43,8 @@ heroku open --app phishbait
 ```heroku logs --tail --app phishbait```
 
 # Sample logs
+
+All visits to your web application will be logged (IP address, user agent). Visits to /gallery.html will take a fingerprint of the adversary and redirect to ```app.photobucket.com``` (feel free to change this default behavior as well)
 
 The meaningful data can be retrieved as follows:
 
