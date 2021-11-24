@@ -23,7 +23,7 @@ It works like this:
 ```heroku login
 heroku container:login
 heroku create phishbait
-docker build -t registry.heroku.com/phishbait/web
+docker build -t registry.heroku.com/phishbait/web .
 docker push registry.heroku.com/phishbait/web
 heroku container:release --app phishbait web
 heroku open --app phishbait
